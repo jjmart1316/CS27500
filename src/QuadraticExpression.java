@@ -1,6 +1,7 @@
 /**
  * The QuadraticExpression application prints the number of roots found
  * in the expression and the value of the expression at x
+ *
  * @author Juan Martinez (mart1316@pnw.edu)
  */
 
@@ -19,6 +20,7 @@ public class QuadraticExpression implements Cloneable {
 
     /**
      * Constructor initializes instance variables with pre-defined values
+     *
      * @param a value of a
      * @param b value of b
      * @param c value of c
@@ -30,7 +32,37 @@ public class QuadraticExpression implements Cloneable {
     }
 
     /**
+     * static method adds the values of two objects, creates a new object and initialises the new objects with the sums
+     *
+     * @param q1 object to be evaluated
+     * @param q2 object to be evaluated
+     * @return returns new object initialized with the sum from two other objects
+     */
+    public static QuadraticExpression sum(QuadraticExpression q1, QuadraticExpression q2) {
+        double aSum = q1.a + q2.a;
+        double bSum = q1.b + q2.b;
+        double cSum = q1.c + q2.c;
+        QuadraticExpression sum = new QuadraticExpression(aSum, bSum, cSum);
+        return sum;
+    }
+
+    /**
+     * static method creates a new object and initializes the object with scaled values from another object
+     *
+     * @param r scale parameter
+     * @param q object parameter
+     * @return returns new object with initialized values from a scaled object
+     */
+    public static QuadraticExpression scale(double r, QuadraticExpression q) {
+        double aScale = r * q.a;
+        double bScale = r * q.b;
+        double cScale = r * q.c;
+        return new QuadraticExpression(aScale, bScale, cScale);
+    }
+
+    /**
      * Method returns the values of the expression as a string
+     *
      * @return returns expression as a string
      */
     public String toString() {
@@ -49,7 +81,7 @@ public class QuadraticExpression implements Cloneable {
             expression += b + "x";
         }
 
-        if ( (a != 0 || b != 0) && c != 0) {
+        if ((a != 0 || b != 0) && c != 0) {
             expression += " + " + c;
         } else expression += c;
         return expression;
@@ -57,6 +89,7 @@ public class QuadraticExpression implements Cloneable {
 
     /**
      * Method that returns the value of the expression at x
+     *
      * @param x value to be evaluated
      * @return returns the value after computation
      */
@@ -65,7 +98,8 @@ public class QuadraticExpression implements Cloneable {
     }
 
     /**
-     *Access modifier
+     * Access modifier
+     *
      * @param a parameter value initiates variable a
      */
     public void setA(double a) {
@@ -74,6 +108,7 @@ public class QuadraticExpression implements Cloneable {
 
     /**
      * Access modifier
+     *
      * @param b parameter value initiates variable b
      */
     public void setB(double b) {
@@ -82,6 +117,7 @@ public class QuadraticExpression implements Cloneable {
 
     /**
      * Access modifier
+     *
      * @param c parameter value initiates variable c
      */
     public void setC(double c) {
@@ -89,36 +125,8 @@ public class QuadraticExpression implements Cloneable {
     }
 
     /**
-     * static method adds the values of two objects, creates a new object and initialises the new objects with the sums
-     * @param q1 object to be evaluated
-     * @param q2 object to be evaluated
-     * @return returns new object initialized with the sum from two other objects
-     */
-    public static QuadraticExpression sum(QuadraticExpression q1, QuadraticExpression q2) {
-        double aSum = q1.a + q2.a;
-        double bSum = q1.b + q2.b;
-        double cSum = q1.c + q2.c;
-        QuadraticExpression sum = new QuadraticExpression(aSum, bSum, cSum);
-        return sum;
-    }
-
-    /**
-     * static method creates a new object and initializes the object with scaled values from another object
-     * @param r scale parameter
-     * @param q object parameter
-     * @return returns new object with initialized values from a scaled object
-     */
-    public static QuadraticExpression scale(double r, QuadraticExpression q) {
-        double aScale = r * q.a;
-        double bScale = r * q.b;
-        double cScale = r * q.c;
-
-        QuadraticExpression scale = new QuadraticExpression(aScale, bScale, cScale);
-        return scale;
-    }
-
-    /**
      * method identifies if quadratic expression has roots
+     *
      * @return returns root number(s)
      */
     public int numberOfRoots() {
@@ -135,7 +143,7 @@ public class QuadraticExpression implements Cloneable {
         if (b * b < 4 * a * c)
             return 0;
 
-        if(b * b == 4 * a * c)
+        if (b * b == 4 * a * c)
             return 1;
 
         return 2;
@@ -143,9 +151,10 @@ public class QuadraticExpression implements Cloneable {
 
     /**
      * method adds the values of another object to the calling object
+     *
      * @param q object parameter
      */
-    public void add( QuadraticExpression q) {
+    public void add(QuadraticExpression q) {
         this.a += q.a;
         this.b += q.b;
         this.c += q.c;
@@ -154,6 +163,7 @@ public class QuadraticExpression implements Cloneable {
 
     /**
      * method returns smallest the value of the root(s)
+     *
      * @return returns the smallest root value
      * @throws Exception if there are no root
      */
@@ -174,11 +184,12 @@ public class QuadraticExpression implements Cloneable {
 
         double root1 = (-b / 2 * a) + (Math.sqrt(b * b - (4 * a * c)) / (2 * a));
         double root2 = (-b / 2 * a) - (Math.sqrt(b * b - (4 * a * c)) / (2 * a));
-        return Math.min(root1,root2);
+        return Math.min(root1, root2);
     }
 
     /**
      * method evaluates the larger root
+     *
      * @return returns the value of the root
      * @throws Exception trows exception if calling object has no roots
      */
@@ -199,17 +210,22 @@ public class QuadraticExpression implements Cloneable {
 
     /**
      * boolean method overrides object class and evaluates the calling object and other object
+     *
      * @param otherObj object parameter
      * @return returns true if calling object's variables and other object's variables are equal
      */
-    public boolean equals(QuadraticExpression otherObj) {
-        return (this.a == otherObj.a &&
-                this.b == otherObj.b &&
-                this.c == otherObj.c );
+    public boolean equals(Object otherObj) {
+        if (otherObj instanceof QuadraticExpression) {
+            QuadraticExpression candidate = (QuadraticExpression) otherObj;
+            return (candidate.a == a) &&
+                    (candidate.b == b) &&
+                    (candidate.c == c);
+        } else return false;
     }
 
     /**
      * method creates a clone
+     *
      * @return returns a copy of the calling object
      */
     public QuadraticExpression clone() {
@@ -217,8 +233,7 @@ public class QuadraticExpression implements Cloneable {
 
         try {
             clone = (QuadraticExpression) super.clone();
-        }
-        catch (CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
             throw new RuntimeException("This class does not implement Cloneable");
         }
         return clone;
