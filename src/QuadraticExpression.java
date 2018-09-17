@@ -2,7 +2,7 @@
  * The QuadraticExpression application prints the number of roots found
  * in the expression and the value of the expression at x
  *
- * @author Juan Martinez (mart1316@pnw.edu)
+ * @author XXXXXX (xxxxxxxxx@XXX.edu)
  */
 
 public class QuadraticExpression implements Cloneable {
