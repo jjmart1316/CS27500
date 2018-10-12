@@ -1,0 +1,71 @@
+Define  a class  QuadraticExpression that represents the quadratic expression ax^2 + bx + c:
+You should provide the following methods
+
+  (1) default constructor which initalizes all the coefficients to 0
+
+  (2) a constructor that takes three parameters
+          public QuadraticExpression(double a, double b, double c) 
+  
+  (3) a toString() method that returns the expression as a string. 
+   
+  (4) evaluate method that returns the value of the expression at x 
+    public double evaluate(double x)
+    
+  (5) set method of a, b, c  
+       public void setA(double newA)
+       public void setB(double newB)
+       public void setC(double newC)
+     
+  (6) public static QuadraticExpression sum( QuadraticExpression q1, QuadraticExpression q2): 
+      returns a new expression that is the sum of the q1 and q2
+
+  (7) public static QuadraticExpression scale( double r, QuadraticExpression q)
+      returns a new expression that is r times q
+
+  (8) public int numberOfRoots()
+      returns number of roots, where 3 means infite number of roots
+     
+  (9) public void add( QuadraticExpression q)
+      add q to the calling expression object
+
+  (10) public double smallerRoot() throws Exception
+   Depending on the equation ax^2 + bx + c = 0: 
+      if no roots, throw exception
+      if single root, return it
+      if two roots, return  the smaller root
+      if infinite root, return -Double.MAX_VALUE
+
+  (11) public double largerRoot() throws Exception
+      if no roots, throw exception
+      if single root, return it
+      if two roots, return  the larger root
+      if infinite root, return Double.MAX_VALUE
+  
+  (12) equals method
+      This should OVERRIDE equals method from Object class
+  
+      return true if two expressions have same a, same b and same c
+
+  (13) clone 
+       return a copy of the calling object
+   
+
+  (14) use javadoc style comments for the class, and the methods
+  
+       At minimum, include the author,  parameters and return types for each method. 
+       
+  (15) use javadoc to generate document for your class
+  
+  (16) test your class:
+       you can write your own main to test your code;
+    
+        but you have to pass the test in QuadraticExpressionTest.java 
+
+   (17) submit  
+     a. QuadraticExpression.java
+     b. QuadraticExpression.html
+      on blackboard.
+
+   (18) turn in printout of
+  a. QuadraticExpression.java
+ b. the output of your program 
