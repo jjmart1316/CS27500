@@ -1,8 +1,8 @@
-/**
+/*****************************************************************************
  *  Polynomial class creates a representation of polynomials using linked list
  *  Assignment: 3, option 2
  * @author <a href="mailto:mart1316@pnw.edu">Juan M.</a>
- * */
+ * ****************************************************************************/
 
 public class Polynomial {
     private Node head;
@@ -15,15 +15,18 @@ public class Polynomial {
     }
 
     /**
-     * Constructor creates a polynomial with a coefficient value in the x^0 term
-     * @param a0 a0
+     * Creates a polynomial with a user specified coefficient element in the x^0 term
+     * @param a0
+     * The coefficient element
      * */
     public Polynomial(double a0) {
         head = new Node(a0, 0, null);
     }
+
     /**
-     *Constructor creates a copy of an existing polynomial
-     * @param p the polynomial which is to be copied
+     *Creates a copy of an existing polynomial
+     * @param p
+     * the polynomial which is to be copied
      * */
     public Polynomial(Polynomial p) {
         this(0);
@@ -37,8 +40,9 @@ public class Polynomial {
      * @param amount amount to be added to the coefficient
      * @param newExponent the degree of the term whose coefficient is to be modified
      * */
+    @SuppressWarnings("LoopConditionNotUpdatedInsideLoop")
     public void add_to_coef(double amount, int newExponent) {
-        //if amount = 0, no changes are made
+        //if amount == 0, no changes are made
         if (amount == 0) {
             return;
         }
@@ -130,7 +134,7 @@ public class Polynomial {
                 head = head.link;
                 return;
             }
-            for (Node cursor = head; cursor != null; cursor = cursor.link) {
+            for (Node cursor = head; true; cursor = cursor.link) {
                 if (cursor.link.exponent == exponent) {
                     if (cursor.link.exponent == 0) {
                         cursor.link.coefficient = 0;
@@ -156,8 +160,14 @@ public class Polynomial {
  * Returns coefficient at specified exponent of this polynomial
  * @return The coefficient of the term
  * @param exponent The exponent of the term whose coefficient is sought
+ * @throws IllegalArgumentException
+ *  throws exception if given exponent is greater than the polynomial terms
  **/
-    public double coefficient(int exponent) {
+    public double coefficient(int exponent) throws IllegalArgumentException {
+        if (exponent > head.exponent) {
+            throw new IllegalArgumentException("exponent argument is greater than polynomial terms");
+        }
+
         for (Node cursor = head; cursor != null; cursor = cursor.link) {
             if (cursor.exponent == exponent) {
                 return cursor.coefficient;
@@ -192,9 +202,9 @@ public class Polynomial {
     }
 
     /**
-     * @return Returns a string representing the polynomial expression with coefficients displayed to the tenths place,
-     * omitting any coefficients that are zero.
-     * If all coefficients are 0, then the zero function is reported.
+     * creates a string representing the polynomial expression with coefficients displayed to the tenths place,
+     * omitting any coefficients that are zero. If all coefficients are 0, then the zero function is reported.
+     * @return string representation of polynomial
      **/
     @Override
     public String toString() {
