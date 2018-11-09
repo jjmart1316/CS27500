@@ -1,3 +1,4 @@
+//Main to test Polynomial class
 public class Main {
     public static void main(String[] args) {
         Polynomial p1 = new Polynomial();
@@ -85,7 +86,5 @@ public class Main {
         System.out.println("      p1.assign_coef(1,5),  p1 = " + p1);
 
         System.out.println("      p2 * p1 = " + p1.multiply(p2));
-
-
     }
 }
