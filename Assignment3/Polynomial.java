@@ -5,40 +5,35 @@
  * ****************************************************************************/
 
 public class Polynomial {
-    private Node head;
+    private TermNode first;
 
-    /**
-     * constructor creates a polynomial object with coefficient = 0 in the x^0 term
-     * */
+    /**constructor creates a polynomial object with coefficient == 0 in the x^0 term*/
     public Polynomial() {
         this(0.0);
     }
 
-    /**
-     * Creates a polynomial with a user specified coefficient element in the x^0 term
-     * @param a0
-     * The coefficient element
-     * */
+    /**Creates a polynomial with a user specified coefficient element in the x^0 term
+     * @param a0 The coefficient element*/
     public Polynomial(double a0) {
-        head = new Node(a0, 0, null);
+        first = new TermNode(a0, 0, null);
     }
 
-    /**
-     *Creates a copy of an existing polynomial
-     * @param p
-     * the polynomial which is to be copied
-     * */
+    /**Creates a copy of an existing polynomial
+     * @param p The polynomial which is to be copied*/
     public Polynomial(Polynomial p) {
+        //Initializes the calling object with coefficient == 0 in the x^0 term
         this(0);
-        for (Node cursor = p.head; cursor!= null; cursor = cursor.link) {
+
+        //Loop to iterate and add p's terms into the calling object
+        for (TermNode cursor = p.first; cursor!= null; cursor = cursor.NextTerm) {
             this.add_to_coef(cursor.coefficient, cursor.exponent);
         }
     }
 
     /**Adds coefficient and exponent terms to the polynomial collection in decreasing order of degree
      * If the term added results in a coefficient of zero, then that term is deleted from the polynomial collection
-     * @param amount amount to be added to the coefficient
-     * @param newExponent the degree of the term whose coefficient is to be modified
+     * @param amount Amount to be added to the coefficient
+     * @param newExponent Degree of the term whose coefficient is to be modified
      * */
     @SuppressWarnings("LoopConditionNotUpdatedInsideLoop")
     public void add_to_coef(double amount, int newExponent) {
@@ -49,26 +44,26 @@ public class Polynomial {
 
         //if  exponent is greater than the leading exponents in the collection, it is added to the
         // front of the collection
-        if (newExponent > head.exponent) {
-            head = new Node(amount, newExponent, head);
+        if (newExponent > first.exponent) {
+            first = new TermNode(amount, newExponent, first);
             return;
         }
 
         //if coefficient == 0 for the leading term, the leading term is then removed from the collection
-        if ((head.exponent == newExponent) && (amount + head.coefficient == 0)) {
-            head = head.link;
+        if ((first.exponent == newExponent) && (amount + first.coefficient == 0)) {
+            first = first.NextTerm;
             return;
         }
 
         //loop to transverse polynomial
-        for (Node cursor = head; cursor != null; cursor = cursor.link) {
+        for (TermNode cursor = first; cursor != null; cursor = cursor.NextTerm) {
             //if target exponent is in the collection, the conditions checks for coefficient resulting in zero
             if (cursor.exponent == newExponent) {
                 //if coefficient is zero that term is removed from the collection
                 if (cursor.coefficient + amount == 0) {
-                    for (Node cursor2 = head; newExponent != 0; cursor2 = cursor2.link) {
-                        if (cursor2.link.exponent == newExponent) {
-                            cursor2.link = cursor2.link.link;
+                    for (TermNode cursor2 = first; newExponent != 0; cursor2 = cursor2.NextTerm) {
+                        if (cursor2.NextTerm.exponent == newExponent) {
+                            cursor2.NextTerm = cursor2.NextTerm.NextTerm;
                             return;
                         }
                     }
@@ -79,74 +74,69 @@ public class Polynomial {
             }
 
             //if the target exponent is not in the collection, it is added  between greater and lesser exponent terms
-            if (cursor.exponent > newExponent && newExponent > cursor.link.exponent) {
-                cursor.link = new Node(amount, newExponent, cursor.link);
+            if (cursor.exponent > newExponent && newExponent > cursor.NextTerm.exponent) {
+                cursor.NextTerm = new TermNode(amount, newExponent, cursor.NextTerm);
                 return;
             }
         }//end of loop
     }
 
-    /**
-     * Adds the terms of p into the activating polynomial
-     * @return Returns a Polynomial that is the sum of p and this Polynomial.
-     * @param p The Polynomial to be added to the activating Polynomial.
-     * **/
+    /**Adds the terms of p into the activating polynomial
+     * @return Returns a Polynomial that is the sum of p and the calling Polynomial (this).
+     * @param p The Polynomial to be added to the activating Polynomial.**/
     public Polynomial add(Polynomial p) {
-        for (Node cursor = p.head; cursor != null; cursor = cursor.link) {
+        for (TermNode cursor = p.first; cursor != null; cursor = cursor.NextTerm) {
             this.add_to_coef(cursor.coefficient, cursor.exponent);
         }
         return this;
     }
 
-    /**
-     * creates and returns a polynomial obtained by multiplying the terms of p and the colling polynomial
+    /**creates and returns a polynomial obtained by multiplying the terms of p and the colling polynomial
      * @param p The polynomial to be multiplied
-     * @return The product of the activating Polynomial and p
-     * */
+     * @return The product of the activating Polynomial and p**/
     public Polynomial multiply(Polynomial p) {
+        //creates a TermNode with coefficient = 0 in the x^0 term
         Polynomial multiPoly = new Polynomial(0);
 
-        for (Node i = p.head; i != null; i = i.link ) {
-             for (Node j = this.head; j != null; j = j.link) {
-                 double coefficient = i.coefficient * j.coefficient;
-                 int exponent = i.exponent + j.exponent;
-                 multiPoly.add_to_coef(coefficient, exponent);
-             }
-         }
-
+        //Loops multiplies p and the calling object and places the product in multiPoly terms
+        for (TermNode cursorP = p.first; cursorP != null; cursorP = cursorP.NextTerm ) {
+            for (TermNode cursor = this.first; cursor != null; cursor = cursor.NextTerm) {
+                double coefficient = cursorP.coefficient * cursor.coefficient;
+                int exponent = cursorP.exponent + cursor.exponent;
+                multiPoly.add_to_coef(coefficient, exponent);
+            }
+        }
         return multiPoly;
     }
 
-    /**
-     *Sets the coefficient of a specified term to a specified value
+    /**Sets the coefficient of a specified term to a specified value
      * @param coefficient The new value of the coefficient
-     * @param exponent The degree of the term whose coefficient is to be modified
-     * */
+     * @param exponent The degree of the term whose coefficient is to be modified*/
     public void assign_coef(double coefficient, int exponent) {
         //if exponent > than collection exponents, the term is added in the front of the leading terms;
-        if (exponent > head.exponent) {
+        if (exponent > first.exponent) {
             add_to_coef(coefficient, exponent);
             return;
         }
         //if coefficient == 0, the term is removed except for exponent x^0
         if (coefficient == 0) {
-            if (head.exponent == exponent) {
-                head = head.link;
+            if (first.exponent == exponent) {
+                first = first.NextTerm;
                 return;
             }
-            for (Node cursor = head; true; cursor = cursor.link) {
-                if (cursor.link.exponent == exponent) {
-                    if (cursor.link.exponent == 0) {
-                        cursor.link.coefficient = 0;
+            for (TermNode cursor = first; true; cursor = cursor.NextTerm) {
+                if (cursor.NextTerm.exponent == exponent) {
+                    if (cursor.NextTerm.exponent == 0) {
+                        cursor.NextTerm.coefficient = 0;
                         return;
                     }
-                    cursor.link = cursor.link.link;
+                    cursor.NextTerm = cursor.NextTerm.NextTerm;
                     return;
                 }
             }
         }
         //if exponent is in the collection, the coefficient is assign
-        for (Node cursor = head; cursor != null; cursor = cursor.link) {
+        for (TermNode cursor = first; cursor != null; cursor = cursor.NextTerm) {
             if (cursor.exponent == exponent) {
                 cursor.coefficient = coefficient;
                 return;
@@ -156,19 +146,19 @@ public class Polynomial {
         add_to_coef(coefficient, exponent);
     }
 
-/**
- * Returns coefficient at specified exponent of this polynomial
- * @return The coefficient of the term
- * @param exponent The exponent of the term whose coefficient is sought
- * @throws IllegalArgumentException
- *  throws exception if given exponent is greater than the polynomial terms
- **/
+    /**
+     * Returns coefficient at specified exponent of this polynomial
+     * @return The coefficient of the term
+     * @param exponent The exponent of the term whose coefficient is sought
+     * @throws IllegalArgumentException
+     *  throws exception if given exponent is greater than the polynomial terms
+     **/
     public double coefficient(int exponent) throws IllegalArgumentException {
-        if (exponent > head.exponent) {
+        if (exponent > first.exponent) {
             throw new IllegalArgumentException("exponent argument is greater than polynomial terms");
         }
 
-        for (Node cursor = head; cursor != null; cursor = cursor.link) {
+        for (TermNode cursor = first; cursor != null; cursor = cursor.NextTerm) {
             if (cursor.exponent == exponent) {
                 return cursor.coefficient;
             }
@@ -179,42 +169,38 @@ public class Polynomial {
         return 0.0;
     }
 
-    /**
-     * evaluates polynomial at the given value of x
+    /**evaluates polynomial at the given value of x
      * @return The value of this Polynomial with the given value for the variable x.
      * @param x The value at which the Polynomial is to be evaluated.
-     * evaluates terms by using Horner's method
-     ***/
+     * evaluates terms by using Horner's method*/
     public double eval(double x) {
-        Node cursor = head;
+        TermNode cursor = first;
         double result = cursor.coefficient;
         int degree = cursor.exponent;
 
         while(degree != 0) {
             result *= x;
             degree--;
-            if (degree == cursor.link.exponent) {
-                cursor = cursor.link;
+            if (degree == cursor.NextTerm.exponent) {
+                cursor = cursor.NextTerm;
                 result += cursor.coefficient;
             }
         }
         return result;
     }
 
-    /**
-     * creates a string representing the polynomial expression with coefficients displayed to the tenths place,
+    /**creates a string representing the polynomial expression with coefficients displayed to the tenths place,
      * omitting any coefficients that are zero. If all coefficients are 0, then the zero function is reported.
-     * @return string representation of polynomial
-     **/
+     * @return string representation of polynomial*/
     @Override
     public String toString() {
         //if coefficient is zero and there are no other terms, the output is 0
-        if (head.coefficient == 0 && head.link == null) {
+        if (first.coefficient == 0 && first.NextTerm == null) {
             return "0";
         }
 
         StringBuilder str = new StringBuilder();
-        for (Node cursor = head; cursor != null; cursor = cursor.link) {
+        for (TermNode cursor = first; cursor != null; cursor = cursor.NextTerm) {
             //coefficient is rounded to the tenths place
             cursor.coefficient = Math.round( cursor.coefficient * 10) / 10.0;
 
@@ -268,18 +254,16 @@ public class Polynomial {
         return str.toString().trim();
     }
 
-    /**
-     * Node inner-class
-     * */
-    private static class Node {
+    //Inner-Class
+    private static class TermNode {
         private double coefficient;
         private int exponent;
-        private Node link;
+        private TermNode NextTerm;
 
-        private Node(double coefficient, int exponent, Node link) {
+        private TermNode(double coefficient, int exponent, TermNode NextTerm) {
             this.coefficient = coefficient;
             this.exponent = exponent;
-            this.link = link;
+            this.NextTerm = NextTerm;
         }
     }
 }
