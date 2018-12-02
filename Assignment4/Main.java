@@ -3,7 +3,7 @@ import java.util.Stack;
 /**
  * This program takes a infix expression and converts it to a postfix expression
  * Assignment: 4
- * @author <a href="mailto:mart1316@pnw.edu">Juan M.</a>
+ * @author
  */
 public class Main {
     public static void main(String[] args) {
@@ -27,7 +27,8 @@ public class Main {
         for (int index = 0; index < str.length(); index++) {
             char c = str.charAt(index);
 
-            //if c is a digit or an algebraic variable it is added to the postfix expression
+            //if c is a digit, an algebraic variable, a dot, or blank (String formatting helper) it is added to
+            //the postfix expression
             if ( Character.isLetterOrDigit(c) || c == '.' || c == ' ' ) {
                 postfix.append(c);
 
@@ -99,8 +100,6 @@ public class Main {
         return  c == '+' ||
                 c == '-' ||
                 c == '*' ||
-                c == '^' ||
-                c == '%' ||
                 c == '/';
     }
 }
