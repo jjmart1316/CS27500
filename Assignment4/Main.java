@@ -45,7 +45,7 @@ public class Main {
                 stack.push(c);
 
                 //if c is a right parenthesis and the stack is not empty, the stack is then popped and added to the
-                //postfix expression until a left parenthesis is encountered. If there is left parenthesis then an
+                //postfix expression until a left parenthesis is encountered. If there is no left parenthesis then an
                 //exception is thrown with a misplaced parenthesis statement
             } else if ( c == ')') {
                 boolean hasLeftParenthesis = false;
