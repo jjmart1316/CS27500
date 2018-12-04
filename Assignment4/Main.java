@@ -32,9 +32,11 @@ public class Main {
             if ( Character.isLetterOrDigit(c) || c == '.' || c == ' ' ) {
                 postfix.append(c);
 
-                //if c is a left parenthesis it is added to the stack
+                //if c is a left parenthesis it is added to the stack and a blank (string format helper) is appended
+                //to postfix expression.
             } else if ( c == '(' ) {
                 stack.push(c);
+                postfix.append(" ");
 
                 //if c is an operator the stack is pop and added to the postfix expression only if c's precedence is
                 // smaller or equal to the topmost operator in the stack. Otherwise, c is just added to the stack
