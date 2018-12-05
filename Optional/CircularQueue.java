@@ -3,8 +3,6 @@
  * 2. The items in the queue are stored in a circular linked-list, with the rear of the queue at the final node
  * 3. For a non-empty queue, the instance variable rear points the the final node and links to the front of the the
  *    collection. For an an empty queue the rear is the null reference.
- * @author Juan J Martinez
- *    <a href="mailto:mart1316@pnw.edu">(mart1316@pnw.edu)</a>
  ******************************************************/
 public class CircularQueue<E> {
     private Node<E> rear;
